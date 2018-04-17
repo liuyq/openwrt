@@ -347,6 +347,20 @@ define Device/tl-wr703n-v1
 endef
 TARGET_DEVICES += tl-wr703n-v1
 
+# http://blog.iytc.net/wordpress/?p=994
+# DEVICE_PACKAGES := kmod-usb-core kmod-usb2 kmod-ledtrig-usbdev
+#  $(Device/tplink-8mlzma)
+define Device/tl-wr743n-v2
+  $(Device/tplink-4mlzma)
+  DEVICE_TITLE := TP-LINK TL-WR743N v2
+  DEVICE_PACKAGES := kmod-usb-core kmod-usb2 kmod-usb-storage kmod-fs-ext4 block-mount
+  BOARDNAME := TL-WR743N
+  DEVICE_PROFILE := TLWR743NV2
+  TPLINK_HWID := 0x07430102
+  CONSOLE := ttyATH0,115200
+endef
+TARGET_DEVICES += tl-wr743n-v2
+
 define Device/tl-wr710n-v2
   $(Device/tplink-4mlzma)
   DEVICE_TITLE := TP-LINK TL-WR710N v2
