@@ -85,6 +85,7 @@ get_status_led() {
 	tl-wdr4300|\
 	tl-wdr4900-v2|\
 	tl-wr703n|\
+	tl-wr743n|\
 	tl-wr710n|\
 	tl-wr720n-v3|\
 	tl-wr802n-v1|\

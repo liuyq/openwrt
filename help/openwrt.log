@@ -1,0 +1,161 @@
+ˇˇ˛ˇˇ¸˛˛ˇ˛¯ˇ>ˇ¸‡˛ˇ˛˛˛˛˛ˇ˛ˇˇˇ˛ˇ˛ˇ¿¯ˇˇˇˇˇˇˇˇˇˇ˛æˇˇ¸ˇˇ‡ˇˇˇˇ˛¯Ï¯ˇﬁÿˇ¿ˇˇ=Äˇ‡ˇ‡ﬂÏ˛¿8˛ˇ‡>ˇˇˇˇˇˇˇˇ¸ˇˇˇˇˇˇˇÄBJ@JBJJHJBHBBRJJH˙BBJBBJJBBBJ
+JJBJBJJJç°H®’ΩΩ—Å1.1.4 (Mar 18 2013 - 16:54:01)
+
+AP121 (ar9330) U-boot
+
+DRAM:  32 MB
+led turning on for 1s...
+id read 0x100000ff
+flash size 4194304, sector count = 64
+Flash:  4 MB
+Using default environment
+
+In:    serial
+Out:   serial
+Err:   serial
+Net:   ag7240_enet_initialize...
+No valid address in Flash. Using fixed address
+No valid address in Flash. Using fixed address
+: cfg1 0x5 cfg2 0x7114
+eth0: 00:03:7f:09:0b:ad
+ag7240_phy_setup 
+eth0 up
+: cfg1 0xf cfg2 0x7214
+eth1: 00:03:7f:09:0b:ad
+athrs26_reg_init_lan
+ATHRS26: resetting s26
+ATHRS26: s26 reset done
+ag7240_phy_setup 
+eth1 up
+eth0, eth1
+Autobooting in 1 seconds
+## Booting image at 9f020000 ...
+   Uncompressing Kernel Image ... OK
+
+Starting kernel ...
+
+[    0.000000] Linux version 4.9.91 (liu@dl380p) (gcc version 7.3.0 (OpenWrt GCC 7.3.0 r6693-ec1d7b9) ) #0 Sun Apr 15 21:22:57 2018
+[    0.000000] bootconsole [early0] enabled
+[    0.000000] CPU0 revision is: 00019374 (MIPS 24Kc)
+[    0.000000] SoC: Atheros AR9330 rev 1
+[    0.000000] Determined physical RAM map:
+[    0.000000]  memory: 02000000 @ 00000000 (usable)
+[    0.000000] Initrd not found or empty - disabling initrd
+[    0.000000] Primary instruction cache 64kB, VIPT, 4-way, linesize 32 bytes.
+[    0.000000] Primary data cache 32kB, 4-way, VIPT, cache aliases, linesize 32 bytes
+[    0.000000] Zone ranges:
+[    0.000000]   Normal   [mem 0x0000000000000000-0x0000000001ffffff]
+[    0.000000] Movable zone start for each node
+[    0.000000] Early memory node ranges
+[    0.000000]   node   0: [mem 0x0000000000000000-0x0000000001ffffff]
+[    0.000000] Initmem setup node 0 [mem 0x0000000000000000-0x0000000001ffffff]
+[    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 8128
+[    0.000000] Kernel command line:  board=TL-WR743N  console=ttyATH0,115200 rootfstype=squashfs noinitrd
+[    0.000000] PID hash table entries: 128 (order: -3, 512 bytes)
+[    0.000000] Dentry cache hash table entries: 4096 (order: 2, 16384 bytes)
+[    0.000000] Inode-cache hash table entries: 2048 (order: 1, 8192 bytes)
+[    0.000000] Writing ErrCtl register=00000000
+[    0.000000] Readback ErrCtl register=00000000
+[    0.000000] Memory: 27536K/32768K available (3147K kernel code, 152K rwdata, 768K rodata, 212K init, 212K bss, 5232K reserved, 0K cma-reserved)
+[    0.000000] SLUB: HWalign=32, Order=0-3, MinObjects=0, CPUs=1, Nodes=1
+[    0.000000] NR_IRQS:51
+[    0.000000] Clocks: CPU:400.000MHz, DDR:400.000MHz, AHB:200.000MHz, Ref:25.000MHz
+[    0.000000] clocksource: MIPS: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 9556302233 ns
+[    0.000013] sched_clock: 32 bits at 200MHz, resolution 5ns, wraps every 10737418237ns
+[    0.007572] Calibrating delay loop... 265.42 BogoMIPS (lpj=1327104)
+[    0.088757] pid_max: default: 32768 minimum: 301
+[    0.093334] Mount-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.099511] Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.109911] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+[    0.117949] futex hash table entries: 256 (order: -1, 3072 bytes)
+[    0.124652] NET: Registered protocol family 16
+[    0.129977] MIPS: machine is TP-LINK TL-WR743N v2
+[    0.424262] clocksource: Switched to clocksource MIPS
+[    0.429221] NET: Registered protocol family 2
+[    0.433165] TCP established hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.438774] TCP bind hash table entries: 1024 (order: 0, 4096 bytes)
+[    0.444779] TCP: Hash tables configured (established 1024 bind 1024)
+[    0.450969] UDP hash table entries: 256 (order: 0, 4096 bytes)
+[    0.456456] UDP-Lite hash table entries: 256 (order: 0, 4096 bytes)
+[    0.462737] NET: Registered protocol family 1
+[    0.471936] Crashlog allocated RAM at address 0x1f00000
+[    0.476927] workingset: timestamp_bits=30 max_order=13 bucket_order=0
+[    0.491834] squashfs: version 4.0 (2009/01/31) Phillip Lougher
+[    0.496077] jffs2: version 2.2 (NAND) (SUMMARY) (LZMA) (RTIME) (CMODE_PRIORITY) (c) 2001-2006 Red Hat, Inc.
+[    0.516602] io scheduler noop registered
+[    0.518969] io scheduler deadline registered (default)
+[    0.524348] Serial: 8250/16550 driver, 1 ports, IRQ sharing disabled
+[    0.530574] ar933x-uart: ttyATH0 at MMIO 0x18020000 (irq = 11, base_baud = 1562500) is a AR933X UART
+[    0.539168] console [ttyATH0] enabled
+[    0.539168] console [ttyATH0] enabled
+[    0.545977] bootconsole [early0] disabled
+[    0.545977] bootconsole [early0] disabled
+[    0.558157] m25p80 spi0.0: found s25sl032p, expected m25p80
+[    0.562293] m25p80 spi0.0: s25sl032p (4096 Kbytes)
+[    0.568150] 5 tp-link partitions found on MTD device spi0.0
+[    0.572612] Creating 5 MTD partitions on "spi0.0":
+[    0.577451] 0x000000000000-0x000000020000 : "u-boot"
+[    0.584443] 0x000000020000-0x00000016dcb8 : "kernel"
+[    0.590209] 0x00000016dcb8-0x0000003f0000 : "rootfs"
+[    0.595959] mtd: device 2 (rootfs) set to be root filesystem
+[    0.600216] 1 squashfs-split partitions found on MTD device rootfs
+[    0.606422] 0x000000360000-0x0000003f0000 : "rootfs_data"
+[    0.613924] 0x0000003f0000-0x000000400000 : "art"
+[    0.619504] 0x000000020000-0x0000003f0000 : "firmware"
+[    0.626862] libphy: Fixed MDIO Bus: probed
+[    0.647618] libphy: ag71xx_mdio: probed
+[    1.275973] ag71xx ag71xx.0: connected to PHY at ag71xx-mdio.1:04 [uid=004dd041, driver=Generic PHY]
+[    1.284775] eth0: Atheros AG71xx at 0xb9000000, irq 4, mode:MII
+[    1.291465] NET: Registered protocol family 10
+[    1.298501] NET: Registered protocol family 17
+[    1.301683] 8021q: 802.1Q VLAN Support v1.8
+[    1.313459] VFS: Mounted root (squashfs filesystem) readonly on device 31:2.
+[    1.320757] Freeing unused kernel memory: 212K
+[    1.323739] This architecture does not have kernel memory protection.
+[    2.172317] init: Console is alive
+[    2.174670] init: - watchdog -
+[    2.504283] random: fast init done
+[    3.481631] kmodloader: loading kernel modules from /etc/modules-boot.d/*
+[    3.569463] usbcore: registered new interface driver usbfs
+[    3.573613] usbcore: registered new interface driver hub
+[    3.579043] usbcore: registered new device driver usb
+[    3.591559] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+[    3.598914] ehci-platform: EHCI generic platform driver
+[    3.602798] ehci-platform ehci-platform: EHCI Host Controller
+[    3.608551] ehci-platform ehci-platform: new USB bus registered, assigned bus number 1
+[    3.618491] ehci-platform ehci-platform: irq 3, io mem 0x1b000000
+[    3.644313] ehci-platform ehci-platform: USB 2.0 started, EHCI 1.00
+[    3.650272] hub 1-0:1.0: USB hub found
+[    3.653279] hub 1-0:1.0: 1 port detected
+[    3.660922] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+[    3.667599] ohci-platform: OHCI generic platform driver
+[    3.672352] kmodloader: done loading kernel modules from /etc/modules-boot.d/*
+[    3.682128] init: - preinit -
+[    4.767575] IPv6: ADDRCONF(NETDEV_UP): eth0: link is not ready
+Press the [f] key and hit [enter] to enter failsafe mode
+Press the [1], [2], [3] or [4] key and hit [enter] to select the debug level
+[    8.014888] jffs2: notice: (372) jffs2_build_xattr_subsystem: complete building xattr subsystem, 0 of xdatum (0 unchecked, 0 orphan) and 0 of xref (0 dead, 0 orphan) found.
+[    8.030762] mount_root: switching to jffs2 overlay
+[    8.077374] urandom-seed: Seeding with /etc/urandom.seed
+[    8.362324] procd: - early -
+[    8.363882] procd: - watchdog -
+[    9.017519] procd: - watchdog -
+[    9.019568] procd: - ubus -
+[    9.139756] procd: - init -
+Please press Enter to activate this console.
+[    9.603655] kmodloader: loading kernel modules from /etc/modules.d/*
+[    9.615836] ip6_tables: (C) 2000-2006 Netfilter Core Team
+[    9.638382] Loading modules backported from Linux version wt-2017-11-01-0-gfe248fc2c180
+[    9.645008] Backport generated by backports.git v4.14-rc2-1-31-g86cf0e5d
+[    9.655993] ip_tables: (C) 2000-2006 Netfilter Core Team
+[    9.672529] nf_conntrack version 0.5.0 (1024 buckets, 4096 max)
+[    9.756587] xt_time: kernel timezone is -0000
+[    9.839591] PPP generic driver version 2.4.2
+[    9.846018] NET: Registered protocol family 24
+[    9.924396] ieee80211 phy0: Atheros AR9330 Rev:1 mem=0xb8100000, irq=2
+[   10.086779] kmodloader: done loading kernel modules from /etc/modules.d/*
+[   20.879196] br-lan: port 1(eth0) entered blocking state
+[   20.882979] br-lan: port 1(eth0) entered disabled state
+[   20.888830] device eth0 entered promiscuous mode
+[   20.911034] IPv6: ADDRCONF(NETDEV_UP): br-lan: link is not ready
+˛˛ˇÄ¸ˇxÄˇˇˇ
