@@ -45,6 +45,7 @@ ar71xx_setup_interfaces()
 	tl-mr3420|\
 	tl-wdr3320-v2|\
 	tl-wdr3500|\
+	tl-wr743n|\
 	tl-wr740n-v6|\
 	tl-wr741nd-v4|\
 	tl-wr840n-v2|\
@@ -136,7 +137,6 @@ ar71xx_setup_interfaces()
 	tl-wa901nd-v4|\
 	tl-wa901nd-v5|\
 	tl-wr703n|\
-	tl-wr743n|\
 	tl-wr802n-v1|\
 	tl-wr802n-v2|\
 	tl-wr902ac-v1|\
