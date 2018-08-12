@@ -172,3 +172,98 @@ opkg install luci
 https://en.code-bude.net/2013/02/16/how-to-increase-storage-on-tp-link-wr703n-with-extroot/
 
 https://wiki.openwrt.org/doc/howto/generic.sysupgrade
+
+### install tftp server on ubuntu
+## https://help.ubuntu.com/community/TFTP
+sudo apt-get install tftpd-hpa
+sudo service tftpd-hpa status
+sudo service tftpd-hpa restart
+The default configuration file for tftpd-hpa is /etc/default/tftpd-hpa.
+The default root directory where files will be stored is /var/lib/tftpboot.
+
+# LuCI Essentials
+# https://openwrt.org/zh-cn/doc/howto/luci
+enable ExBoot, and install luci on USB Drive
+
+==============================
+root@OpenWrt:~# opkg list
+base-files - 188-r6693-ec1d7b9
+busybox - 1.28.3-1
+dnsmasq - 2.79-3
+dropbear - 2017.75-5
+firewall - 2018-04-05-35b3e74a-2
+fstools - 2018-02-11-3d239815-1
+fwtool - 1
+hostapd-common - 2018-04-09-fa617ee6-1
+ip6tables - 1.6.2-1
+iptables - 1.6.2-1
+iw - 4.14-1
+iwinfo - 2018-02-15-223e09bf-1
+jshn - 2018-04-12-6eff829d-1
+jsonfilter - 2018-02-04-c7e938d6-1
+kernel - 4.9.91-1-d36eb51ce7cd3df5e7d972b30cc4c8ea
+kmod-ath - 4.9.91+2017-11-01-4
+kmod-ath9k - 4.9.91+2017-11-01-4
+kmod-ath9k-common - 4.9.91+2017-11-01-4
+kmod-cfg80211 - 4.9.91+2017-11-01-4
+kmod-gpio-button-hotplug - 4.9.91-2
+kmod-ip6tables - 4.9.91-1
+kmod-ipt-conntrack - 4.9.91-1
+kmod-ipt-core - 4.9.91-1
+kmod-ipt-nat - 4.9.91-1
+kmod-lib-crc-ccitt - 4.9.91-1
+kmod-mac80211 - 4.9.91+2017-11-01-4
+kmod-nf-conntrack - 4.9.91-1
+kmod-nf-conntrack6 - 4.9.91-1
+kmod-nf-ipt - 4.9.91-1
+kmod-nf-ipt6 - 4.9.91-1
+kmod-nf-nat - 4.9.91-1
+kmod-nf-reject - 4.9.91-1
+kmod-nf-reject6 - 4.9.91-1
+kmod-nls-base - 4.9.91-1
+kmod-ppp - 4.9.91-1
+kmod-pppoe - 4.9.91-1
+kmod-pppox - 4.9.91-1
+kmod-slhc - 4.9.91-1
+kmod-usb-core - 4.9.91-1
+kmod-usb-ehci - 4.9.91-1
+kmod-usb-ledtrig-usbport - 4.9.91-1
+kmod-usb-ohci - 4.9.91-1
+kmod-usb2 - 4.9.91-1
+lede-keyring - 2017-01-20-a50b7529-1
+libblobmsg-json - 2018-04-12-6eff829d-1
+libc - 1.1.19-1
+libgcc - 7.3.0-1
+libip4tc - 1.6.2-1
+libip6tc - 1.6.2-1
+libiwinfo - 2018-02-15-223e09bf-1
+libjson-c - 0.12.1-1
+libjson-script - 2018-04-12-6eff829d-1
+libnl-tiny - 0.1-5
+libpthread - 1.1.19-1
+libubox - 2018-04-12-6eff829d-1
+libubus - 2018-01-16-5bae22eb-1
+libuci - 2018-03-24-5d2bf09e-1
+libuclient - 2017-11-02-4b87d831-1
+libxtables - 1.6.2-1
+logd - 2018-02-14-128bc35f-1
+mtd - 21
+netifd - 2018-04-03-3dc8c916-1
+odhcp6c - 2018-05-04-474b5a3a-11
+odhcpd-ipv6only - 1.5-1
+opkg - 2017-12-07-3b417b9f-2
+ppp - 2.4.7-12
+ppp-mod-pppoe - 2.4.7-12
+procd - 2018-03-28-dfb68f85-1
+swconfig - 11
+uboot-envtools - 2015.10-1
+ubox - 2018-02-14-128bc35f-1
+ubus - 2018-01-16-5bae22eb-1
+ubusd - 2018-01-16-5bae22eb-1
+uci - 2018-03-24-5d2bf09e-1
+uclient-fetch - 2017-11-02-4b87d831-1
+usign - 2015-07-04-ef641914-1
+wireless-regdb - 2017-10-20-4343d359
+wpad-mini - 2018-04-09-fa617ee6-1
+root@OpenWrt:~# 
+========================================

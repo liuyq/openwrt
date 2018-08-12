@@ -1,0 +1,95 @@
+http://blog.iytc.net/wordpress/?s=WR743N
+
+1、连接TTL串口
+
+2、在出现“Autobooting in 1 seconds   ”时按下tp两按键（有的说要tpl三个按键）
+
+eth0: 00:00:00:00:e7:00
+eth0 up
+: cfg1 0xf cfg2 0x7214
+eth1: 00:03:7f:ff:ff:fe
+athrs26_reg_init_lan
+ATHRS26: resetting s26
+ATHRS26: s26 reset done
+eth1 up
+eth0, eth1
+Autobooting in 1 seconds
+hornet>
+
+出现“hornet>”提示符
+
+3、查看当前环境变量
+
+hornet> printenv
+bootargs=console=ttyS0,115200 root=31:02 rootfstype=squashfs init=/sbin/init mtdparts=ar7240-nor0:128k(u-boot),1024k(kernel),6912(ro
+otfs),64k(config),64k(ART)
+bootcmd=bootm 0x9f020000
+bootdelay=1
+baudrate=115200
+ethaddr=0x00:0xaa:0xbb:0xcc:0xdd:0xee
+ipaddr=192.168.1.1
+serverip=192.168.1.100
+stdin=serial
+stdout=serial
+stderr=serial
+ethact=eth0
+
+要改变 服务器地址可以用setenv serverip 192.168.1.181
+
+4、计算机与路由器LAN相连，IP设置为192.168.1.100 ，开启tftp服务器
+
+5、tftp上传固件
+
+执行如下命令：
+
+ tftpboot 0x80000000 743.bin 
+
+ 注意：如果是8M flash把0x3c0000修改为0x7c0000
+
+  erase 0x9f020000 +0x3c0000
+
+  注意：如果是8M flash把0x3c0000修改为0x7c0000
+
+   cp.b 0x80000000 0x9f020000 0x3c0000
+
+   示例：
+
+   hornet> tftpboot 0x80000000 743.bin
+   dup 1 speed 1000
+   Using eth1 device
+   TFTP from server 192.168.1.100; our IP address is 192.168.1.1
+   Filename '743.bin'.
+   Load address: 0x80000000
+   Loading: *#################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   #################################################################
+   ######################################################
+   done
+   Bytes transferred = 3932160 (3c0000 hex)
+   hornet> erase 0x9f020000 +0x3c0000
+
+   First 0x2 last 0x3d sector size 0x10000
+   Erased 60 sectors
+   hornet> cp.b 0x80000000 0x9f020000 0x3c0000
+
+   Copy to Flash... write addr: 9f020000
+   done
+   hornet> boot
+
+   ## Booting image at 9f020000 ...
+   Uncompressing Kernel Image ... OK
+
+   Starting kernel ...
+
+   [ 0.000000] Linux version 3.18.20 (buildbot@builder1) (gcc version 4.8.3 (OpenWrt/Linaro GCC 4.8-2014.04 r46450) ) #1 Fri Sep 4 21:55:57 CEST 2015
+   [ 0.000000] bootconsole [early0] enabled
+
+   输入boot命令重新启动
