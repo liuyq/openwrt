@@ -51,39 +51,39 @@ static struct flash_platform_data tl_wr743n_flash_data = {
 static struct gpio_led tl_wr743n_leds_gpio[] __initdata = {
 	{
 		.name = "tp-link:green:system",
-		.gpio = TL_WR743_GPIO_LED_SYSTEM,
+		.gpio = TL_WR743N_GPIO_LED_SYSTEM,
 		.active_low = 1,
 	}, {
 		.name = "tp-link:green:lan1",
-		.gpio = TL_WR743_GPIO_LED_LAN1,
+		.gpio = TL_WR743N_GPIO_LED_LAN1,
 		.active_low = 0,
 	}, {
 		.name = "tp-link:green:lan2",
-		.gpio = TL_WR743_GPIO_LED_LAN2,
+		.gpio = TL_WR743N_GPIO_LED_LAN2,
 		.active_low = 0,
 	}, {
 		.name = "tp-link:green:lan3",
-		.gpio = TL_WR743_GPIO_LED_LAN3,
+		.gpio = TL_WR743N_GPIO_LED_LAN3,
 		.active_low = 0,
 	}, {
 		.name = "tp-link:green:lan4",
-		.gpio = TL_WR743_GPIO_LED_LAN4,
+		.gpio = TL_WR743N_GPIO_LED_LAN4,
 		.active_low = 0,
 	}, {
 		.name = "tp-link:green:wan",
-		.gpio = TL_WR743_GPIO_LED_WAN,
+		.gpio = TL_WR743N_GPIO_LED_WAN,
 		.active_low = 1,
 	}, {
 		.name = "tp-link:green:qss",
-		.gpio = TL_WR743_GPIO_LED_QSS,
+		.gpio = TL_WR743N_GPIO_LED_QSS,
 		.active_low = 0,
 	}, {
 		.name = "tp-link:green:wlan",
-		.gpio = TL_WR743_GPIO_LED_WLAN,
+		.gpio = TL_WR743N_GPIO_LED_WLAN,
 		.active_low = 0,
 	}, {
 		.name = "tp-link:green:3g",
-		.gpio = TL_WR743_GPIO_LED_3G,
+		.gpio = TL_WR743N_GPIO_LED_3G,
 		.active_low = 0,
 	},
 };

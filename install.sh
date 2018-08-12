@@ -181,6 +181,16 @@ sudo service tftpd-hpa restart
 The default configuration file for tftpd-hpa is /etc/default/tftpd-hpa.
 The default root directory where files will be stored is /var/lib/tftpboot.
 
+## ttl tftp flash
+## cp sudo cp  bin/targets/ar71xx/tiny/openwrt-ar71xx-tiny-tl-wr743n-v2-squashfs-factory.bin /var/lib/tftpboot/openwrt-new.bin
+tftpboot 0x80000000 wr743nv2.bin
+tftpboot 0x80000000 openwrt.bin
+tftpboot 0x80000000 openwrt-new.bin
+
+erase 0x9f020000 +0x3c0000
+cp.b 0x80000000 0x9f020000 0x3c0000
+bootm 0x9f020000
+
 # LuCI Essentials
 # https://openwrt.org/zh-cn/doc/howto/luci
 enable ExBoot, and install luci on USB Drive
