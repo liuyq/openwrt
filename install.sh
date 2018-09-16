@@ -277,3 +277,13 @@ wireless-regdb - 2017-10-20-4343d359
 wpad-mini - 2018-04-09-fa617ee6-1
 root@OpenWrt:~# 
 ========================================
+
+## compiling and ttl recovery for TL-WR743N V2
+
+设备：TPLINK WR743N v2
+DRAM:  32 MB
+Flash:  4 MB
+CPU revision is: 00019374 (MIPS 24Kc)
+SoC: Atheros AR9330 rev 1
+Clocks: CPU:400.000MHz, DDR:400.000MHz,
+http://blog.iytc.net/wordpress/?s=WR743N
