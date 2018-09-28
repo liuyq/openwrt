@@ -212,7 +212,7 @@ tplink_board_detect() {
 		model="TP-Link TL-WR703N"
 		;;
 	"074301"*)
-		model="TP-Link TL-WR743N"
+		model="TP-Link TL-WR743N V2"
 		;;
 	"071000"*)
 		model="TP-Link TL-WR710N"
