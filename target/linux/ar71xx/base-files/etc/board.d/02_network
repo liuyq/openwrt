@@ -45,7 +45,6 @@ ar71xx_setup_interfaces()
 	tl-mr3420|\
 	tl-wdr3320-v2|\
 	tl-wdr3500|\
-	tl-wr743n|\
 	tl-wr740n-v6|\
 	tl-wr741nd-v4|\
 	tl-wr840n-v2|\
@@ -532,6 +531,11 @@ ar71xx_setup_interfaces()
 		ucidef_set_interfaces_lan_wan "eth0.1" "eth1"
 		ucidef_add_switch "switch0" \
 			"0@eth0" "1:lan:1" "2:lan:2" "3:lan:3" "4:lan:4"
+		;;
+	tl-wr743n)
+		ucidef_set_interfaces_lan_wan "eth1.1" "eth0"
+		ucidef_add_switch "switch0" \
+			"0@eth1" "1:lan:1" "2:lan:2" "3:lan:3" "4:lan:4"
 		;;
 	uap-pro|\
 	wpj342)
