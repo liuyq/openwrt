@@ -62,6 +62,8 @@ sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext  gi
 # WiFi /etc/config/wireless
 # https://openwrt.org/docs/guide-user/network/wifi/basic
 # https://wiki.openwrt.org/doc/uci/wireless
+# https://datahunter.org/openwrt_networking
+# https://wiki.openwrt.org/doc/uci/network
 
 config wifi-device 'radio0'
     option type 'mac80211'
@@ -483,7 +485,7 @@ lrwxrwxrwx    1 root     root             0 Sep 28 17:07 eth1.1 -> ../../devices
 lrwxrwxrwx    1 root     root             0 Jan  1  1970 lo -> ../../devices/virtual/net/lo/
 lrwxrwxrwx    1 root     root             0 Sep 28 17:28 wlan0 -> ../../devices/platform/ar933x_wmac/net/wlan0/
 root@OpenWrt:/#
-=========================
+===============================
 kernel version decided in file include/kernel.mk and with script ./scripts/get_source_date_epoch.sh
 
 =====================
