@@ -19,31 +19,63 @@ make prereq
 #    CONSOLE := ttyATH0,115200
 # endef
 # TARGET_DEVICES += tl-wr743n-v2
-# make menuconfig
+make menuconfig
+make kernel_menuconfig
 # 选编译的目标系统（Atheros AR7XXX架构，profile为743NV2）：
 #   Target System (Atheros AR7xxx/AR9xxx)
 #   Subtarget (Devices with small flash)
 #   Target Profile (TP-LINK TL-WR703N v1)
+# Kernel modules > Filesystems -> kmod-fs-ext4
+# Base system -> block-mount
+# Global build settings -> Enable IPv6 support in packages
 # LuCI->Collections->luci
 # LuCI->Modules->Translations->Chinese (zh-cn)
 # LuCI->Themes->luci-theme-openwrt
-# make -j32 V=99
+make -j32 V=99
+
+# /SATA3/openwrt/target/linux/ar71xx/tiny/config-default
+# kernel dir is in build_dir/target-mips_24kc_musl/linux-ar71xx_tiny/linux-4.9.119/.config
 
 #bin/targets/ar71xx/tiny/openwrt-ar71xx-tiny-tl-wr743n-v2-squashfs-factory.bin
 
 # TTL connection
 # tp1-tp3，tp2-tp4，分别用飞线连接
 # 从左至右依次是VCC（不接）,GND,TX,RX分别接上
-# Putty终端连接，用tpl中断，打开tftp服务，网线接在任意一个lan口，bin包放在tftp目录下
+# Putty终端连接，用tpl中断(type tpl at the beginning of the boot)，
+# 网线接在任意一个lan口(最好不是与wan口挨着的)，另一端与电脑相连。
+# 电脑ip设置为 192.168.1.100: sudo ifconfig enp0s25:0 192.168.1.100
+# it would be better to setup the host ip just after pressed the tftpboot command
+# otherwise the host side ip might be disappeared.
+# 打开tftp服务，bin包放在tftp目录下
 # 命令如下
-# tftp 0x80800000 ***.bin
-# erase 0x9f020000 +0x3c0000
+# tftp 0x80800000 ***.bin # load the image from tftp server
+# erase 0x9f020000 +0x3c0000 # erase space to copy the new bin image
+## copy the new image file from address 0x80800000 to target address 0x9f020000 with the size of 0x3c0000
 # cp.b 0x80800000 0x9f020000 0x3c0000
+## boot the kernel image from 0x9f020000
 # bootm 0x9f020000
 # 自动重启就好了
 # 重新刷好了
 # TP1->RX <-> ttl green
 # TP2->TX <-> ttl white
+
+### install tftp server on ubuntu
+## https://help.ubuntu.com/community/TFTP
+sudo apt-get install tftpd-hpa
+sudo service tftpd-hpa status
+sudo service tftpd-hpa restart
+## The default configuration file for tftpd-hpa is /etc/default/tftpd-hpa.
+## The default root directory where files will be stored is /var/lib/tftpboot.
+
+## ttl tftp flash
+## sudo cp  bin/targets/ar71xx/tiny/openwrt-ar71xx-tiny-tl-wr743n-v2-squashfs-factory.bin /var/lib/tftpboot/openwrt-new.bin
+tftpboot 0x80000000 wr743nv2.bin
+tftpboot 0x80000000 openwrt.bin
+tftpboot 0x80000000 openwrt-new.bin
+
+erase 0x9f020000 +0x3c0000
+cp.b 0x80000000 0x9f020000 0x3c0000
+bootm 0x9f020000
 
 # WAN is the eth0 inteface, connect the wan and pc with internet cable,
 # set PC network interface with ifconfit eth1 192.168.1.2, then you could login
@@ -172,24 +204,6 @@ opkg install luci
 https://en.code-bude.net/2013/02/16/how-to-increase-storage-on-tp-link-wr703n-with-extroot/
 
 https://wiki.openwrt.org/doc/howto/generic.sysupgrade
-
-### install tftp server on ubuntu
-## https://help.ubuntu.com/community/TFTP
-sudo apt-get install tftpd-hpa
-sudo service tftpd-hpa status
-sudo service tftpd-hpa restart
-The default configuration file for tftpd-hpa is /etc/default/tftpd-hpa.
-The default root directory where files will be stored is /var/lib/tftpboot.
-
-## ttl tftp flash
-## cp sudo cp  bin/targets/ar71xx/tiny/openwrt-ar71xx-tiny-tl-wr743n-v2-squashfs-factory.bin /var/lib/tftpboot/openwrt-new.bin
-tftpboot 0x80000000 wr743nv2.bin
-tftpboot 0x80000000 openwrt.bin
-tftpboot 0x80000000 openwrt-new.bin
-
-erase 0x9f020000 +0x3c0000
-cp.b 0x80000000 0x9f020000 0x3c0000
-bootm 0x9f020000
 
 # LuCI Essentials
 # https://openwrt.org/zh-cn/doc/howto/luci
