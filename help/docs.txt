@@ -1,0 +1,63 @@
+https://openwrt.org/supported_devices/432_warning
+https://openwrt.org/docs/guide-user/additional-software/imagebuilder
+https://openwrt.org/docs/guide-user/additional-software/saving_space
+https://openwrt.org/docs/guide-user/additional-software/extroot_configuration
+
+# usb drive would be recognized as /dev/sdxx sd mean scsi disk
+# in dmesg following lines would be printed:
+[    6.964113] usb-storage 1-1:1.0: USB Mass Storage device detected
+[    6.970400] scsi host0: usb-storage 1-1:1.0
+[    8.007425] scsi 0:0:0:0: Direct-Access              Flash Disk       2.00 PQ: 0 ANSI: 2
+[    8.017759] sd 0:0:0:0: [sda] 516608 512-byte logical blocks: (265 MB/252 MiB)
+[    8.024174] sd 0:0:0:0: [sda] Write Protect is off
+[    8.028394] sd 0:0:0:0: [sda] Mode Sense: 0b 00 00 08
+[    8.028917] sd 0:0:0:0: [sda] No Caching mode page found
+[    8.033630] sd 0:0:0:0: [sda] Assuming drive cache: write through
+[    8.048292] sd 0:0:0:0: [sda] Attached SCSI removable disk
+
+# checking filesystems supported:
+root@OpenWrt:/# cat /proc/filesystems
+nodev   sysfs
+nodev   rootfs
+nodev   ramfs
+nodev   bdev
+nodev   proc
+nodev   tmpfs
+nodev   debugfs
+nodev   sockfs
+nodev   bpf
+nodev   pipefs
+nodev   devpts
+        squashfs
+nodev   jffs2
+nodev   overlay
+        vfat
+root@OpenWrt:/#
+
+## to boot with usb drive
+## 1. compile the images with block-mount, kmod-fs-ext4, kmod-usb-core, kmod-usb-storag enabled
+##    so that the usb drive could be recognized.
+## 2. disable ipv6 support, so that we could create the images for 4MB devices
+## 3. boot and change it to boot from usb drive:
+##    https://openwrt.org/docs/guide-user/additional-software/extroot_configuration
+##
+## 3.1 backup the old overlay
+        DEVICE="$(awk -e '/\s\/overlay\s/{print $1}' /etc/mtab)"
+        uci -q delete fstab.rwm
+        uci set fstab.rwm="mount"
+        uci set fstab.rwm.device="${DEVICE}"
+        uci set fstab.rwm.target="/rwm"
+        uci commit fstab
+## 3.2 add new config to mount usb drive
+        DEVICE="/dev/sda1"
+        eval $(block info "${DEVICE}" | grep -o -e "UUID=\S*")
+        uci -q delete fstab.overlay
+        uci set fstab.overlay="mount"
+        uci set fstab.overlay.uuid="${UUID}"
+        uci set fstab.overlay.target="/overlay"
+        uci commit fstab
+## 3.3 copy data to usb drive
+        mount /dev/sda1 /mnt
+        cp -a -f /overlay/. /mnt
+        umount /mnt
+## 3.4 reboot to boot from usb
