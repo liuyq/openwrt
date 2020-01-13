@@ -61,3 +61,10 @@ root@OpenWrt:/#
         cp -a -f /overlay/. /mnt
         umount /mnt
 ## 3.4 reboot to boot from usb
+## 3.5 Preserving software package lists across boots
+        sed -i -r -e "s/^(lists_dir\sext\s).*/\1\/usr\/lib\/opkg\/lists/" /etc/opkg.conf
+        opkg update
+
+## 3.6 install luci from command line
+        https://openwrt.org/docs/guide-user/luci/luci.essentials
+        opkg install luci

@@ -1,0 +1,31 @@
+From bf508d74a9bd73e9303c25894925cd7b1bcfc5d5 Mon Sep 17 00:00:00 2001
+From: Yongqin Liu <yongqin.liu@linaro.org>
+Date: Mon, 17 Sep 2018 06:22:56 +0800
+Subject: [PATCH 3/7] add some hw info
+
+Signed-off-by: Yongqin Liu <yongqin.liu@linaro.org>
+---
+ install.sh | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/install.sh b/install.sh
+index fab7f0cbf0..a6dbe28c1c 100755
+--- a/install.sh
++++ b/install.sh
+@@ -277,3 +277,13 @@ wireless-regdb - 2017-10-20-4343d359
+ wpad-mini - 2018-04-09-fa617ee6-1
+ root@OpenWrt:~# 
+ ========================================
++
++## compiling and ttl recovery for TL-WR743N V2
++
++设备：TPLINK WR743N v2
++DRAM:  32 MB
++Flash:  4 MB
++CPU revision is: 00019374 (MIPS 24Kc)
++SoC: Atheros AR9330 rev 1
++Clocks: CPU:400.000MHz, DDR:400.000MHz,
++http://blog.iytc.net/wordpress/?s=WR743N
+-- 
+2.20.1
+

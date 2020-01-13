@@ -1,0 +1,88 @@
+From 9c6b2c834451721078d760cef2a745ccdd35fc08 Mon Sep 17 00:00:00 2001
+From: Yongqin Liu <yongqin.liu@linaro.org>
+Date: Sun, 12 Aug 2018 17:20:49 +0800
+Subject: [PATCH 2/7] mach-tl-wr743n.c: fix typo of constant names
+
+Signed-off-by: Yongqin Liu <yongqin.liu@linaro.org>
+---
+ install.sh                                     | 10 ++++++++++
+ .../files/arch/mips/ath79/mach-tl-wr743n.c     | 18 +++++++++---------
+ 2 files changed, 19 insertions(+), 9 deletions(-)
+
+diff --git a/install.sh b/install.sh
+index 05e5fa5ac0..fab7f0cbf0 100755
+--- a/install.sh
++++ b/install.sh
+@@ -181,6 +181,16 @@ sudo service tftpd-hpa restart
+ The default configuration file for tftpd-hpa is /etc/default/tftpd-hpa.
+ The default root directory where files will be stored is /var/lib/tftpboot.
+ 
++## ttl tftp flash
++## cp sudo cp  bin/targets/ar71xx/tiny/openwrt-ar71xx-tiny-tl-wr743n-v2-squashfs-factory.bin /var/lib/tftpboot/openwrt-new.bin
++tftpboot 0x80000000 wr743nv2.bin
++tftpboot 0x80000000 openwrt.bin
++tftpboot 0x80000000 openwrt-new.bin
++
++erase 0x9f020000 +0x3c0000
++cp.b 0x80000000 0x9f020000 0x3c0000
++bootm 0x9f020000
++
+ # LuCI Essentials
+ # https://openwrt.org/zh-cn/doc/howto/luci
+ enable ExBoot, and install luci on USB Drive
+diff --git a/target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr743n.c b/target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr743n.c
+index 3e3c56a06b..2f889de093 100644
+--- a/target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr743n.c
++++ b/target/linux/ar71xx/files/arch/mips/ath79/mach-tl-wr743n.c
+@@ -51,39 +51,39 @@ static struct flash_platform_data tl_wr743n_flash_data = {
+ static struct gpio_led tl_wr743n_leds_gpio[] __initdata = {
+ 	{
+ 		.name = "tp-link:green:system",
+-		.gpio = TL_WR743_GPIO_LED_SYSTEM,
++		.gpio = TL_WR743N_GPIO_LED_SYSTEM,
+ 		.active_low = 1,
+ 	}, {
+ 		.name = "tp-link:green:lan1",
+-		.gpio = TL_WR743_GPIO_LED_LAN1,
++		.gpio = TL_WR743N_GPIO_LED_LAN1,
+ 		.active_low = 0,
+ 	}, {
+ 		.name = "tp-link:green:lan2",
+-		.gpio = TL_WR743_GPIO_LED_LAN2,
++		.gpio = TL_WR743N_GPIO_LED_LAN2,
+ 		.active_low = 0,
+ 	}, {
+ 		.name = "tp-link:green:lan3",
+-		.gpio = TL_WR743_GPIO_LED_LAN3,
++		.gpio = TL_WR743N_GPIO_LED_LAN3,
+ 		.active_low = 0,
+ 	}, {
+ 		.name = "tp-link:green:lan4",
+-		.gpio = TL_WR743_GPIO_LED_LAN4,
++		.gpio = TL_WR743N_GPIO_LED_LAN4,
+ 		.active_low = 0,
+ 	}, {
+ 		.name = "tp-link:green:wan",
+-		.gpio = TL_WR743_GPIO_LED_WAN,
++		.gpio = TL_WR743N_GPIO_LED_WAN,
+ 		.active_low = 1,
+ 	}, {
+ 		.name = "tp-link:green:qss",
+-		.gpio = TL_WR743_GPIO_LED_QSS,
++		.gpio = TL_WR743N_GPIO_LED_QSS,
+ 		.active_low = 0,
+ 	}, {
+ 		.name = "tp-link:green:wlan",
+-		.gpio = TL_WR743_GPIO_LED_WLAN,
++		.gpio = TL_WR743N_GPIO_LED_WLAN,
+ 		.active_low = 0,
+ 	}, {
+ 		.name = "tp-link:green:3g",
+-		.gpio = TL_WR743_GPIO_LED_3G,
++		.gpio = TL_WR743N_GPIO_LED_3G,
+ 		.active_low = 0,
+ 	},
+ };
+-- 
+2.20.1
+
