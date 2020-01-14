@@ -1,0 +1,24 @@
+https://oldwiki.archive.openwrt.org/toh/hiwifi/hc6361
+https://wikidevi.wi-cat.ru/HiWiFi_HC6361
+
+https://openwrt.org/toh/hwdata/hiwifi_gee/hiwifi_gee_hc6361
+    Target:     ar71xx
+    Subtarget:     generic
+    Package architecture:     mips_24kc
+    Bootloader:     U-Boot
+    CPU:     Atheros AR9331
+    CPU Cores:     1
+    CPU MHz:    400
+    Flash MB:     16, 4096NAND
+    RAM MB:     64
+
+ar71xx: add profile and build image for HiWiFi HC6361.
+https://git.openwrt.org/?p=openwrt/openwrt.git;a=commitdiff;h=5c1105d2a149f80386dbaeb6f52af7ccbdc48adc;hp=8a3c713c971fa83a6f2c373d87b4aedbbe760e86
+
+https://git.openwrt.org/?p=openwrt%2Fopenwrt.git&a=search&h=HEAD&st=commit&s=HC6361
+    2016-06-30 	Yousong Zhou	ar71xx: hiwifi-hc6361: move packages selection to generic.mk
+    2016-06-22 	Yousong Zhou	ar71xx: hiwifi-hc6361: lift size limit on kernel and...
+    2014-07-23 	John Crispin	ar71xx: fix LED configuration for HiWiFi-HC6361.
+    2014-06-02 	John Crispin	ar71xx: add profile and build image for HiWiFi HC6361.
+    2014-06-02 	John Crispin	ar71xx: add user-space support for HiWiFi HC6361 board.
+    2014-06-02 	John Crispin	ar71xx: add kernel support for HiWiFi HC6361.
