@@ -1,3 +1,8 @@
+https://openwrt.org/toh/hiwifi/hiwifi_gee_hc5661
+Hardware Highlights
+Model	Version	SoC	CPU MHz	Flash MB	RAM MB	WLAN Hardware	WLAN2.4	WLAN5.0	100M ports	Gbit ports	Modem	USB
+HC5661		MediaTek MT7620A	580	16	128	MediaTek MT7620A	b/g/n	-	5	¿	-	-
+
 https://oldwiki.archive.openwrt.org/toh/hiwifi/hc6361
 https://wikidevi.wi-cat.ru/HiWiFi_HC6361
 
@@ -22,3 +27,81 @@ https://git.openwrt.org/?p=openwrt%2Fopenwrt.git&a=search&h=HEAD&st=commit&s=HC6
     2014-06-02 	John Crispin	ar71xx: add profile and build image for HiWiFi HC6361.
     2014-06-02 	John Crispin	ar71xx: add user-space support for HiWiFi HC6361 board.
     2014-06-02 	John Crispin	ar71xx: add kernel support for HiWiFi HC6361.
+
+https://mr21.cc/geek/hiwifi-hc6361-router-change-to-openwrt-firmware.html
+https://github.com/rssnsj/openwrt-hc6361/blob/master/Makefile
+https://openwrt-hiwifi.github.io/
+
+http://syrjbx.com/19211/100.html
+    极路由极壹HC6361刷OpenWrt固件教程
+    时间：2019-04-03 14:04      编辑员：admin       来源：未知
+
+    哈哈哈，原本在Linux道路上缓慢前行的我，突然跑偏了！时隔这么久，没有写博文了，真是对不起自己啊！因为本博客无人关注，所以也只能是对不起自己了！
+    最近我不务正业的方向是，汇编语言，但前进速度一样缓慢，毕竟人到中年，半路出家。
+    回顾十几年前，从PC机安装Win98系统，到现在刷手机ROM，虽也有差点失手的时候，但好在老天眷顾，以及有网络上各位不知名的大神的教程相佑，最多都是虚惊一场。尤其是三星的S3手机，因为设计的缘故，那把没备份EFS的小挫折，记忆犹新。
+    当然，这把刷极路由极壹，其实我也刷砖了，好在还是找到了网络上大神们做的救砖软件，得以救砖成功。
+    事情的起因是，由于技术更新换代，以及众所周知的原因，某些功能在极壹的系统上，失效了，虽然针对极壹S以及极贰的插件，仍旧生龙活虎，但相同插件刷到极壹，也就是极路由最早的设备上时，莫名其妙地失灵了。这燃起了我千方百计折腾的心愿。
+    写这篇教程的时候，其实我并没有在刷上OpenWrt的极壹上，完美地实现路由和你懂的功能，但我希望这篇几乎接近成功的教程，可以帮助一些小白，少走一些弯路。哪怕最后事实证明极壹由于无论软硬件的何种功能的淘汰而无法实现那种特殊的功能，至少也能令有志刷路由器的年轻人们，能学习到一些有用的套路。
+    1. 关于路由器系统版本
+    首先，你有一部极路由极壹HC6361，系统版本的话，我这教程里，不受限制，因为我是用救砖程序，将官方系统从1.1.4.14678s降级到0.9003.2446S的。所以你手里的这部极壹，只要硬件不坏，是否是砖，都无所谓。
+    你的极壹需要开通开发者模式，在智能插件，云平台，路由器信息的最下方。这个方法，极路由官方有介绍，应该不用我赘述。之前有介绍说9005之前的版本可以root后直接刷ROM，由于我们现在的极壹大多不符合这个条件，所以我是直接向官方申请开发者模式的。
+
+    2. 降级极路由极壹的系统
+    这里会使用到下载的软件，地址如下：
+    http://download.csdn.net/detail/feicijibi/9424674
+    先用根网线连接电脑网卡和极路由的LAN端，极路由处于断电状态。开启这个软件，关闭所有杀毒软件和电脑卫士，然后用牙签抵住极路由背后的reset孔，这时让极路由通电，看着软件的提示操作，适时松开reset空，非常傻瓜式。这部分的教程可见以下教程：
+    http://m.jb51.net/network/126201.html
+    刷完以后可以登录路由器后台看看，版本是否为0.9003.2446S
+
+    3. 刷入U-boot
+    这里需要用terminal登录极路由后台，高手可以用XShell，小白用putty.exe，百度都可以找到。ip地址就是极路由的地址，默认是192.168.199.1，端口1022，密码就是登录后台的密码，用户是root
+    在终端里依次输入（句首数字不用输入）
+    <div id="inner-editor"><br class="Apple-interchange-newline">cd /tmp wget http://www.xuanlove.download/hiwifi/HC6361-uboot.bin mtd write HC6361-uboot.bin u-boot</div>
+
+    cd /tmp
+
+    wget http://www.xuanlove.download/hiwifi/HC6361-uboot.bin
+
+    mtd write HC6361-uboot.bin u-boot
+    此处来源于教程：
+    https://www.xuanlove.net/jishujiaoliu/1218.html
+    这一步，是将U-boot替换掉，如果不成功，那就无法刷入除官方以外的ROM，因为U-boot是会校验ROM是否为官方的。
+    至于教程后面的这个ROM，我没试过，暂时贴出来供大家看看。
+    <div id="inner-editor"><br class="Apple-interchange-newline">wget http://www.xuanlove.download/hiwifi/openwrt-ar71xx-generic-hiwifi-hc6361-squashfs-sysupgrade.bin sysupgrade -F -n openwrt-ar71xx-generic-hiwifi-hc6361-squashfs-sysupgrade.bin</div>
+    wget http://www.xuanlove.download/hiwifi/openwrt-ar71xx-generic-hiwifi-hc6361-squashfs-sysupgrade.bin
+    sysupgrade -F -n openwrt-ar71xx-generic-hiwifi-hc6361-squashfs-sysupgrade.bin
+
+    4. 找到合适的OpenWrt的ROM
+    ROM的话，就随意了，写这篇教程的时候，我就只刷成功过一个OpenWrt的ROM。所以在这里也没有什么发言权。这个ROM的下载页面是：
+    https://github.com/rssnsj/openwrt-hc6361/releases
+    我可以肯定的说，这个ROM版本，并不是最新的。如果需要新的ROM，可以自己搜索。
+    下载下来的bin文件，教程中都建议把文件名改成recovery.bin，我就是照做的。
+
+    5.刷入ROM
+    这里需要使用一个叫tftpd的软件，有tftpd32和tftpd64之分，根据自己的电脑CPU位数来决定，不懂的，可以下载一个CPU-Z软件来自己看看，都可以百度下载到。
+    tftpd下载：（只是推荐）
+    http://www.oyksoft.com/soft/6706.html
+    tftpd下载好后，解压缩，把recovery.bin拷贝到这个文件夹中。
+    把电脑的WIFI和网线都拔掉，设置IP和子网掩码为：192.168.1.88和255.255.255.0
+    用一根网线连接电脑的网卡和极路由的LAN端
+    开启并设置好tftpd软件，把当前文件夹设置成tftpd文件夹，确保文件夹里有recovery.bin文件
+    用牙签抵住极路由后的reset孔，接通电源
+    tftpd软件会有提示，要等ROM的bin文件传完，可以松开reset孔
+    如果ROM在安装的话，极路由极壹表面上三个灯，会跑马灯闪烁，显得很繁忙的样子。
+
+    等几分钟或者十几分钟，路由器稳定了，就只有最左的灯亮着，一开始我还以为失败了，后来找到电脑的IP地址，顺着摸到极路由的后台IP，登上去一看，竟然成功了！
+    之后的事情，就是学习如何设置OpenWrt操作系统了。
+    在这里就不展开了，因为我自己也比较菜。
+    我不能保证我这篇教程的万无一失，请看到的朋友们，多看看我推荐的其他人的教程，结合起来，那应该是万无一失的。
+
+    其他比较有借鉴意义的教程，如下：
+    http://www.right.com.cn/forum/forum.php?mod=viewthread&tid=187537&highlight=6361
+    http://www.luyouqiwang.com/192/
+    http://blog.sina.com.cn/s/blog_9b5082c80102vk5z.html
+    https://www.zhiin.net/ji-lu-you-1-hc6361-jie-suo-uboot-shua-openwrt/
+    http://picture.wifi.gs/pdf/JiYi_v1.0.pdf
+    https://my.oschina.net/tsh/blog/366196
+    http://www.right.com.cn/forum/forum.php?mod=viewthread&tid=174240
+    http://bbs.mydigit.cn/read.php?tid=1703280
+    http://www.right.com.cn/forum/thread-131874-1-1.html
+    http://bbs.mydigit.cn/simple/?t1343388.html

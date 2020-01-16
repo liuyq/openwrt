@@ -1,0 +1,33 @@
+https://openwrt.org/toh/hwdata/youku/youku_yk1
+
+http://www.minihere.com/youku-yk-l1-openwrt-and-ddwrt-firmware-download.html
+
+
+Specifications
+
+Brand Name: Youku
+Model: YK-L1
+Memory:
+CPU: MT7620A, 580MHz
+RAM: DDR2, 128MB
+FLASH: SPI, 32MB
+LAN Ports: 10/100Mbps/2 x LAN + 1 x WAN 10/100Mbps
+Micor SD Slot: Supported (On PCB Board)
+USB ports: 1 x USB 2.0
+Power Adapter:
+AC Input : 100 ~240 V(50~60HZ)
+DC Output : 12 V/1.0 A
+Power Consumption : 2 W Max.
+Operating Frequency: 2.4GHz
+Network Standard: IEEE 802.11b, IEEE 802.11g, IEEE 802.11n
+Data Rate:
+802.11b: 1, 2, 5.5, 11Mbps
+802.11g: 6,9,12,18,24,36,48,54Mbps
+802.11n: up to 300Mbps
+Antenna: 5dBi Antenna x 2, Non-detachable Antenna
+Button: 1 x Reset Button
+LED Indicator: Power, Internet, 2.4 GHz Wi-Fi, USB x 1
+Dimensions (LxWxH): 12.8 x 8.8 x 2.2 cm
+Weight: 195.8g (Device Only)
+
+
