@@ -1,3 +1,6 @@
+# https://openwrt.org/docs/start
+# could be used to check all possible functions
+
 https://openwrt.org/supported_devices/432_warning
 https://openwrt.org/docs/guide-user/additional-software/imagebuilder
 https://openwrt.org/docs/guide-user/additional-software/saving_space
@@ -79,25 +82,39 @@ root@OpenWrt:/#
     https://openwrt.org/docs/guide-user/services/print_server/cups.server
 ## P.1 Cannot satisfy the following dependencies for kmod-video-uvc:
 
-    root@OpenWrt:/# opkg install kmod-video-uvc
-    Installing kmod-video-uvc (4.9.211-1) to root...
-    Downloading http://downloads.openwrt.org/releases/18.06-SNAPSHOT/targets/ar71xx/tiny/packages/kmod-video-uvc_4.9.211-1_mips_24kc.ipk
-    Collected errors:
-     * satisfy_dependencies_for: Cannot satisfy the following dependencies for kmod-video-uvc:
-     *      kernel (= 4.9.211-1-db2d5425c674d1648616e3c37760e80e)
-     * opkg_install_cmd: Cannot install package kmod-video-uvc.
-    root@OpenWrt:/# cat /proc/version
-    Linux version 4.9.208 (liuyq@laptop) (gcc version 7.3.0 (OpenWrt GCC 7.3.0 r7960+9-ab9d1bf608) ) #0 Mon Jan 13 10:01:11 2020
-    root@OpenWrt:/#
+        root@OpenWrt:/# opkg install kmod-video-uvc
+        Installing kmod-video-uvc (4.9.211-1) to root...
+        Downloading http://downloads.openwrt.org/releases/18.06-SNAPSHOT/targets/ar71xx/tiny/packages/kmod-video-uvc_4.9.211-1_mips_24kc.ipk
+        Collected errors:
+         * satisfy_dependencies_for: Cannot satisfy the following dependencies for kmod-video-uvc:
+         *      kernel (= 4.9.211-1-db2d5425c674d1648616e3c37760e80e)
+         * opkg_install_cmd: Cannot install package kmod-video-uvc.
+        root@OpenWrt:/# cat /proc/version
+        Linux version 4.9.208 (liuyq@laptop) (gcc version 7.3.0 (OpenWrt GCC 7.3.0 r7960+9-ab9d1bf608) ) #0 Mon Jan 13 10:01:11 2020
+        root@OpenWrt:/#
 
-    root@OpenWrt:/# opkg info kmod-video-uvc
-    Package: kmod-video-uvc
-    Version: 4.9.211-1
-    Depends: kernel (= 4.9.211-1-db2d5425c674d1648616e3c37760e80e), kmod-usb-core, kmod-video-videobuf2, kmod-input-core, kmod-video-core
-    Status: install user not-installed
-    Section: kernel
-    Architecture: mips_24kc
-    Size: 38549
-    Filename: kmod-video-uvc_4.9.211-1_mips_24kc.ipk
-    Description: Kernel modules for supporting USB Video Class (UVC) devices
-    root@OpenWrt:/#
+        root@OpenWrt:/# opkg info kmod-video-uvc
+        Package: kmod-video-uvc
+        Version: 4.9.211-1
+        Depends: kernel (= 4.9.211-1-db2d5425c674d1648616e3c37760e80e), kmod-usb-core, kmod-video-videobuf2, kmod-input-core, kmod-video-core
+        Status: install user not-installed
+        Section: kernel
+        Architecture: mips_24kc
+        Size: 38549
+        Filename: kmod-video-uvc_4.9.211-1_mips_24kc.ipk
+        Description: Kernel modules for supporting USB Video Class (UVC) devices
+        root@OpenWrt:/#
+
+    Resolution 1:
+        KERNEL_PATCHVER defined in include/kernel-version.mk
+        update urls defined in /etc/opkg/distfeeds.conf, like
+            root@OpenWrt:/# cat /etc/opkg/distfeeds.conf
+            src/gz openwrt_core http://downloads.openwrt.org/releases/18.06.6/targets/ar71xx/tiny/packages
+            src/gz openwrt_base http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/base
+            src/gz openwrt_luci http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/luci
+            src/gz openwrt_packages http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/packages
+            src/gz openwrt_routing http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/routing
+            src/gz openwrt_telephony http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/telephony
+            root@OpenWrt:/#
+
+
