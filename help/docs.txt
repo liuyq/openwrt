@@ -60,4 +60,44 @@ root@OpenWrt:/#
         mount /dev/sda1 /mnt
         cp -a -f /overlay/. /mnt
         umount /mnt
+## 3.4 make swap partition
+        dd if=/dev/zero of=/swap bs=1M count=100
+        mkswap /swap
+
+        uci -q delete fstab.swap
+        uci set fstab.swap="swap"
+        uci set fstab.swap.device="/swap"
+        uci commit fstab
+        /etc/init.d/fstab boot
 ## 3.4 reboot to boot from usb
+
+## F.1 support for usb video
+    https://openwrt.org/docs/guide-user/hardware/video/usb.video
+    https://openwrt.org/docs/guide-user/hardware/video/webcam
+
+## F.2 support for usb printer
+    https://openwrt.org/docs/guide-user/services/print_server/cups.server
+## P.1 Cannot satisfy the following dependencies for kmod-video-uvc:
+
+    root@OpenWrt:/# opkg install kmod-video-uvc
+    Installing kmod-video-uvc (4.9.211-1) to root...
+    Downloading http://downloads.openwrt.org/releases/18.06-SNAPSHOT/targets/ar71xx/tiny/packages/kmod-video-uvc_4.9.211-1_mips_24kc.ipk
+    Collected errors:
+     * satisfy_dependencies_for: Cannot satisfy the following dependencies for kmod-video-uvc:
+     *      kernel (= 4.9.211-1-db2d5425c674d1648616e3c37760e80e)
+     * opkg_install_cmd: Cannot install package kmod-video-uvc.
+    root@OpenWrt:/# cat /proc/version
+    Linux version 4.9.208 (liuyq@laptop) (gcc version 7.3.0 (OpenWrt GCC 7.3.0 r7960+9-ab9d1bf608) ) #0 Mon Jan 13 10:01:11 2020
+    root@OpenWrt:/#
+
+    root@OpenWrt:/# opkg info kmod-video-uvc
+    Package: kmod-video-uvc
+    Version: 4.9.211-1
+    Depends: kernel (= 4.9.211-1-db2d5425c674d1648616e3c37760e80e), kmod-usb-core, kmod-video-videobuf2, kmod-input-core, kmod-video-core
+    Status: install user not-installed
+    Section: kernel
+    Architecture: mips_24kc
+    Size: 38549
+    Filename: kmod-video-uvc_4.9.211-1_mips_24kc.ipk
+    Description: Kernel modules for supporting USB Video Class (UVC) devices
+    root@OpenWrt:/#
