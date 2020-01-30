@@ -69,6 +69,7 @@ sudo service tftpd-hpa restart
 
 ## ttl tftp flash
 ## sudo cp  bin/targets/ar71xx/tiny/openwrt-ar71xx-tiny-tl-wr743n-v2-squashfs-factory.bin /var/lib/tftpboot/openwrt-new.bin
+## sudo ifconfig enp0s25:0 192.168.1.100
 tftpboot 0x80000000 wr743nv2.bin
 tftpboot 0x80000000 openwrt.bin
 tftpboot 0x80000000 openwrt-new.bin
