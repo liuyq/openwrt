@@ -1,6 +1,12 @@
 # https://openwrt.org/docs/start
 # could be used to check all possible functions
 
+How to select a tag to base:
+
+check if there release for the tag like
+    http://downloads.openwrt.org/releases/18.06.7/targets/ar71xx/tiny/packages/Packages.gz
+18.06.7 is the tag to be used
+
 https://openwrt.org/supported_devices/432_warning
 https://openwrt.org/docs/guide-user/additional-software/imagebuilder
 https://openwrt.org/docs/guide-user/additional-software/saving_space
@@ -63,7 +69,8 @@ root@OpenWrt:/#
         mount /dev/sda1 /mnt
         cp -a -f /overlay/. /mnt
         umount /mnt
-## 3.4 make swap partition
+## 3.4 reboot
+## 3.5 make swap partition
         dd if=/dev/zero of=/swap bs=1M count=100
         mkswap /swap
 
@@ -74,12 +81,25 @@ root@OpenWrt:/#
         /etc/init.d/fstab boot
 ## 3.4 reboot to boot from usb
 
+## 4  Install Luci
+## 4.1 install Luci
+        opkg update
+        opkg install luci
+
 ## F.1 support for usb video
     https://openwrt.org/docs/guide-user/hardware/video/usb.video
     https://openwrt.org/docs/guide-user/hardware/video/webcam
 
+    opkg install kmod-video-uvc mjpg-streamer
+    /etc/init.d/mjpg-streamer enable
+    /etc/init.d/mjpg-streamer start
+
+    Now open the URL http://192.168.1.1:8080/ in the Firefox browser or VLC and watch the MJPEG stream (the default username/password is “openwrt”/“openwrt”).
+    In other browsers, scripts, etc., you can use http://192.168.1.1:8080?action=snapshot for taking one image or http://192.168.1.1:8080?action=stream for stream of images.
+
 ## F.2 support for usb printer
     https://openwrt.org/docs/guide-user/services/print_server/cups.server
+
 ## P.1 Cannot satisfy the following dependencies for kmod-video-uvc:
 
         root@OpenWrt:/# opkg install kmod-video-uvc
@@ -106,6 +126,8 @@ root@OpenWrt:/#
         root@OpenWrt:/#
 
     Resolution 1:
+        opkg install kmod-video-uvc --force-depends
+    Resolution 2:
         KERNEL_PATCHVER defined in include/kernel-version.mk
         update urls defined in /etc/opkg/distfeeds.conf, like
             root@OpenWrt:/# cat /etc/opkg/distfeeds.conf
