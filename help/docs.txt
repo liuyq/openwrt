@@ -67,9 +67,12 @@ root@OpenWrt:/#
         uci commit fstab
 ## 3.3 copy data to usb drive
         mount /dev/sda1 /mnt
+        rm -fr /mnt/*
         cp -a -f /overlay/. /mnt
         umount /mnt
+
 ## 3.4 reboot
+
 ## 3.5 make swap partition
         dd if=/dev/zero of=/swap bs=1M count=100
         mkswap /swap
@@ -79,21 +82,41 @@ root@OpenWrt:/#
         uci set fstab.swap.device="/swap"
         uci commit fstab
         /etc/init.d/fstab boot
-## 3.4 reboot to boot from usb
 
-## 4  Install Luci
-## 4.1 install Luci
+## 4. Preserving software package lists across boots
+    sed -i -r -e "s/^(lists_dir\sext\s).*/\1\/usr\/lib\/opkg\/lists/" /etc/opkg.conf
+
+    src/gz openwrt_core http://192.168.5.136:8080/targets/ar71xx/tiny/packages
+    opkg update
+
+## 5.  Install Luci
+## 5.1 install Luci
         opkg update
         opkg install luci
 
+        http://192.168.5.1/cgi-bin/luci/
 ## F.1 support for usb video
     https://openwrt.org/docs/guide-user/hardware/video/usb.video
     https://openwrt.org/docs/guide-user/hardware/video/webcam
 
     opkg install kmod-video-uvc mjpg-streamer
+    opkg install usbutils v4l2-utils uvcdynctrl fswebcam
+
+    edit /etc/config/mjpg-streamer to:
+        1. enable mjpg-streamer
+        2. enable yuv to 1, otherwise JPEG format will be used,
+           and mjpg_streamer could not display it correctly via http access
     /etc/init.d/mjpg-streamer enable
     /etc/init.d/mjpg-streamer start
 
+    play with:
+    -y         (enable yuv format)
+    -r WxH        (resolution wight x hight. 160x120 is the smallest)
+    -f Digit    (framerate per sek. use 1)
+    example:
+    mjpg_streamer -i "input_uvc.so -d /dev/video0 -y -r 160x120 -f 5 -q 50" -o "output_http.so -w /www/webcam"
+
+    uvcdynctrl -d /dev/video0 --formats
     Now open the URL http://192.168.1.1:8080/ in the Firefox browser or VLC and watch the MJPEG stream (the default username/password is “openwrt”/“openwrt”).
     In other browsers, scripts, etc., you can use http://192.168.1.1:8080?action=snapshot for taking one image or http://192.168.1.1:8080?action=stream for stream of images.
 
@@ -129,9 +152,11 @@ root@OpenWrt:/#
         opkg install kmod-video-uvc --force-depends
     Resolution 2:
         KERNEL_PATCHVER defined in include/kernel-version.mk
-        update urls defined in /etc/opkg/distfeeds.conf, like
+        setup local release site, run following command under the bin directory:
+            python -m SimpleHTTPServer 8080
+        update the url for openwrt_core defined in /etc/opkg/distfeeds.conf to use local site
             root@OpenWrt:/# cat /etc/opkg/distfeeds.conf
-            src/gz openwrt_core http://downloads.openwrt.org/releases/18.06.6/targets/ar71xx/tiny/packages
+            src/gz openwrt_core http://192.168.5.136:8080/targets/ar71xx/tiny/packages
             src/gz openwrt_base http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/base
             src/gz openwrt_luci http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/luci
             src/gz openwrt_packages http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/packages
@@ -139,4 +164,6 @@ root@OpenWrt:/#
             src/gz openwrt_telephony http://downloads.openwrt.org/releases/18.06.6/packages/mips_24kc/telephony
             root@OpenWrt:/#
 
-
+## P.2 mjpg_streamer: Unable to start capture: No space left on device
+    need to use a good usb hub and a good usb drive
+    otherwise the bandwidth of the webcam might be affected
