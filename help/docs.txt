@@ -97,11 +97,28 @@ root@OpenWrt:/#
         uci commit fstab
         /etc/init.d/fstab boot
 
+## set host to have fixed static ip
+    Or via cmdline:
+        uci -q delete dhcp.laptop
+        uci set dhcp.laptop=host
+        uci set dhcp.laptop.name=laptop
+        uci set dhcp.laptop.dns=1
+        uci set dhcp.laptop.map=3C:97:0E:67:5A:E9
+        uci set dhcp.laptop.ip=192.168.5.135
+        uci commit dhcp
+        /etc/init.d/dnsmasq restart
+
+    host side restart the networking servie to have new ip
+        sudo /etc/init.d/networking restart
+
 ## 4. Preserving software package lists across boots
+    host side, open server for kmod packages:
+        python -m SimpleHTTPServer 8080
+
     sed -i -r -e "s/^(lists_dir\sext\s).*/\1\/usr\/lib\/opkg\/lists/" /etc/opkg.conf
 
-    src/gz openwrt_core http://192.168.5.136:8080/targets/ar71xx/tiny/packages
-    sed -i -r 's|http://downloads.openwrt.org/releases/18.06.6/targets|http://192.168.5.135:8080/targets|' /etc/opkg/distfeeds.conf
+    src/gz openwrt_core http://192.168.5.135:8080/targets/ar71xx/tiny/packages
+    sed -i -r 's|http://downloads.openwrt.org/releases/19.07.1/targets|http://192.168.5.135:8080/targets|' /etc/opkg/distfeeds.conf
     opkg update
 
 ## 5.  Install Luci
@@ -119,15 +136,6 @@ root@OpenWrt:/#
             option dns '1'
             option mac '3C:97:0E:67:5A:E9'
             option ip '192.168.5.135'
-    Or via cmdline:
-        uci -q delete dhcp.laptop
-        uci set dhcp.laptop=host
-        uci set dhcp.laptop.name=laptop
-        uci set dhcp.laptop.dns=1
-        uci set dhcp.laptop.map=3C:97:0E:67:5A:E9
-        uci set dhcp.laptop.ip=192.168.5.135
-        uci commit dhcp
-        /etc/init.d/dnsmasq restart
 
 ## Access via ssh
     ssh root@192.168.5.1

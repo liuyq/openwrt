@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
 
-make dirclean
+#make dirclean
 sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext  git libncurses5-dev libz-dev patch unzip zlib1g-dev  subversion git
 # get all the latest package definitions defined in feeds.conf / feeds.conf.default respectively
 ./scripts/feeds update -a
@@ -13,7 +13,7 @@ sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext  gi
 make prereq
 
 #make menuconfig
-make -j16 V=99 2>&1 |tee make-tl-wr743n.log
+make -j16 V=99 2>&1 |tee make-tl-wr743n-19.07.log
 
 exit
 ## P.1 /usr/bin/ld: zconf.tab.o: relocation R_X86_64_32S against symbol `symbol_yes' can not be used when making a PIE object; recompile with -fPIC

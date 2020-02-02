@@ -42,14 +42,9 @@ OpenVPN:
             option route_delay '2'
 
 
-openconnect:
-    opkg install luci-proto-openconnect openconnect
+    /usr/sbin/openvpn --syslog "openvpn(expressvpn)" --status /var/run/openvpn.expressvpn.status --cd /etc/openvpn/ --config jp_tokyo3.ovpn
 
-    https://github.com/openwrt/luci/tree/master/protocols/luci-proto-openconnect
-    https://github.com/openwrt/packages/tree/master/net/openconnect
-
-
-pp2p:
+pptp:
     https://openwrt.org/docs/guide-user/services/vpn/pptp/basic
     https://openwrt.org/docs/guide-user/services/vpn/pptp/client
 
@@ -133,6 +128,12 @@ OR VIA LuCI
     After completing all changes, power cycle the router for it to connect to the VPN provider.
          Go to LuCI → Network → Interfaces
         Uptime and IPv4 address provided by VPN provider should be visible for the VPN interface if it is working.
+
+openconnect:
+    opkg install luci-proto-openconnect openconnect
+
+    https://github.com/openwrt/luci/tree/master/protocols/luci-proto-openconnect
+    https://github.com/openwrt/packages/tree/master/net/openconnect
 
 l2tp:
     https://openwrt.org/docs/guide-user/network/wan/connect_by_l2tp
