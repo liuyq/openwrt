@@ -1,0 +1,138 @@
+https://openwrt.org/docs/guide-user/services/vpn/overview
+
+OpenVPN:
+    https://openwrt.org/docs/guide-user/services/vpn/openvpn/client-luci
+    https://openwrt.org/docs/guide-user/services/vpn/openvpn/client
+
+    opkg install kmod-tun openvpn-openssl luci-app-openvpn
+
+    edit the config file: /etc/config/openvpn
+        config openvpn 'expressvpn'
+            option dh 'dh1024.pem'
+            option float '1'
+            option client '1'
+            option reneg_sec '0'
+            option verb '3'
+            option persist_key '1'
+            option nobind '1'
+            option remote_cert_tls 'server'
+            list remote 'hongkong-2-ca-version-2.expressnetw.com'
+            option port '1195'
+            option dev_type 'tun'
+            option key_direction '1'
+            option proto 'udp'
+            option ca '/etc/luci-uploads/cbid.openvpn.expressvpn.ca'
+            option cert '/etc/luci-uploads/cbid.openvpn.expressvpn.cert'
+            option key '/etc/luci-uploads/cbid.openvpn.expressvpn.key'
+            option tls_client '1'
+            option pull '1'
+            option remote_random '1'
+            option dev 'tun'
+            option persist_tun '1'
+            option fast_io '1'
+            option enabled '1'
+            option auth_user_pass '/etc/openvpn/expressvpn.auth'
+            option redirect_gateway 'def1'
+            option cipher 'AES-256-CBC'
+            option auth 'SHA512'
+            option keysize '256'
+            option ns_cert_type 'server'
+            option sndbuf '524288'
+            option rcvbuf '524288'
+            option route_delay '2'
+
+
+openconnect:
+    opkg install luci-proto-openconnect openconnect
+
+    https://github.com/openwrt/luci/tree/master/protocols/luci-proto-openconnect
+    https://github.com/openwrt/packages/tree/master/net/openconnect
+
+
+pp2p:
+    https://openwrt.org/docs/guide-user/services/vpn/pptp/basic
+    https://openwrt.org/docs/guide-user/services/vpn/pptp/client
+
+    opkg install kmod-ipt-raw kmod-pptp kmod-mppe ppp-mod-pptp luci-proto-ppp
+
+    kmod-pptp:
+        Kernel modules > Network Support -> kmod-pptp
+    kmod-mppe:
+        Kernel modules > Network Support -> kmod-mppe
+    kmod-ipt-raw
+        Kernel modules > Netfilter Extensions -> kmod-ipt-raw
+
+VIA CMDLINE:
+
+    # Configure firewall
+    uci del_list firewall.@zone[1].network="pptp"
+    uci add_list firewall.@zone[1].network="pptp"
+    uci commit firewall
+    service firewall restart
+
+    # OpenWrt 18.06
+    opkg install kmod-ipt-raw
+    cat << EOF > /etc/firewall.user
+    iptables -t raw -A OUTPUT -p tcp \
+    -m comment --comment "!fw3: PPTP connection tracking" \
+    -m tcp --dport 1723 -j CT --helper pptp
+    EOF
+    uci commit firewall
+    service firewall restart
+
+    # Configure network
+    uci -q delete network.pptp
+    uci set network.pptp="interface"
+    uci set network.pptp.proto="pptp"
+    uci set network.pptp.username="VPN_USERNAME"
+    uci set network.pptp.password="VPN_PASSWORD"
+    uci set network.pptp.server="SERVER_NAME_OR_IP_ADDRESS"
+    uci commit network
+    service network restart
+
+OR VIA LuCI
+
+    Go to LuCI → Network → Interfaces. Click on Add new interface button.
+        Specify a name for this interface. e.g. VPN
+        Change the Protocol to PPTP
+        Press Submit button.
+
+        Enter VPN server name or IP address
+        Enter username
+        Enter password
+        Press Save & Apply button.
+
+    Go to LuCI → Network → Firewall
+        Scroll down to Zones and press the Add button to create a new zone.
+        For LEDE 17/OpenWrt 18, use the following settings (Required changes to default values are highlighted bold):
+            Name: e.g. VPN_FW
+            Input: reject
+            Output: accept
+            Forward: reject
+            Masquerading: ticked
+            MSS clamping: ticked
+            Covered networks: Choose only the VPN network interface created earlier (e.g. VPN)
+
+            Press Save & Apply button.
+
+    Go to LuCI → Network → Firewall
+        Scroll down to Zones and edit the lan zone (usually at top of the list of zones).
+        Go to 'Inter-Zone Forwarding'.
+        Change 'Allow forward to destination zones' from wan to the newly created VPN firewall zone (e.g. VPN_FW)
+        Press Save & Apply button.
+
+        The Zones should look like this image:
+
+        Some VPN providers may require you to specify extra PPTP parameters. They can be added to this file /etc/ppp/options.pptp.
+
+    For OpenWrt 18.06, install the package kmod-ipt-raw, go to LuCI → Network → Firewall → Custom rules and append the following:
+        iptables -t raw -A OUTPUT -p tcp \
+        -m comment --comment "!fw3: PPTP connection tracking" \
+        -m tcp --dport 1723 -j CT --helper pptp
+
+    After completing all changes, power cycle the router for it to connect to the VPN provider.
+         Go to LuCI → Network → Interfaces
+        Uptime and IPv4 address provided by VPN provider should be visible for the VPN interface if it is working.
+
+l2tp:
+    https://openwrt.org/docs/guide-user/network/wan/connect_by_l2tp

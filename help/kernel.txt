@@ -1,0 +1,35 @@
+## build kernel:
+
+## Related make files:
+    ./include/kernel.mk
+    ./include/kernel-build.mk
+    ./include/kernel-version.mk
+
+## version information defined in include/kernel-version.mk
+## the build date in /proc/version
+    is defined by the variant of KBUILD_BUILD_TIMESTAMP in include/kernel.mk
+    which is gotten by scripts/get_source_date_epoch.sh, and affects by the version.date file
+
+## build command:
+    defined by the KERNEL_MAKE_FLAGS/KERNEL_MAKE/KERNEL_MAKEOPTS variables in file include/kernel.mk
+    make \
+        -C /home/liuyq/data/openwrt/build_dir/target-mips_24kc_musl/linux-ar71xx_tiny/linux-4.9.119 \
+        HOSTCFLAGS="-O2 \
+        -I/home/liuyq/data/openwrt/staging_dir/host/include  \
+        -Wall \
+        -Wmissing-prototypes \
+        -Wstrict-prototypes" \
+        CROSS_COMPILE="mips-openwrt-linux-musl-" \
+        ARCH="mips" \
+        KBUILD_HAVE_NLS=no \
+        KBUILD_BUILD_USER="" \
+        KBUILD_BUILD_HOST="" \
+        KBUILD_BUILD_TIMESTAMP="Sun Sep 16 22:22:56 2018" \
+        KBUILD_BUILD_VERSION="0" \
+        HOST_LOADLIBES="-L/home/liuyq/data/openwrt/staging_dir/host/lib" \
+        CONFIG_SHELL="bash" \
+        V=''  \
+        cmd_syscalls= \
+        KERNELRELEASE=4.9.119 \
+        CC="mips-openwrt-linux-musl-gcc" \
+        all modules

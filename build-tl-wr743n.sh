@@ -6,7 +6,8 @@ sudo apt-get install -y build-essential asciidoc binutils bzip2 gawk gettext  gi
 # get all the latest package definitions defined in feeds.conf / feeds.conf.default respectively
 ./scripts/feeds update -a
 # install symlinks of all of them into package/feeds/
-./scripts/feeds install -a
+#./scripts/feeds install -a
+./scripts/feeds install -a -p packages
 
 #make defconfig
 make prereq

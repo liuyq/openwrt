@@ -43,6 +43,20 @@ nodev   overlay
         vfat
 root@OpenWrt:/#
 
+## Flash new firmwares
+    press tpl to step into uboot
+
+    sudo cp  bin/targets/ar71xx/tiny/openwrt-ar71xx-tiny-tl-wr743n-v2-squashfs-factory.bin /var/lib/tftpboot/openwrt-new.bin
+
+    sudo ifconfig enp0s25:0 192.168.1.100
+
+    hornet> tftpboot 0x80000000 openwrt-new.bin
+    hornet> erase 0x9f020000 +0x3c0000
+    hornet> cp.b 0x80000000 0x9f020000 0x3c0000
+    hornet> bootm 0x9f020000
+
+    sudo ifconfig enp0s25:0 down
+
 ## to boot with usb drive
 ## 1. compile the images with block-mount, kmod-fs-ext4, kmod-usb-core, kmod-usb-storag enabled
 ##    so that the usb drive could be recognized.
@@ -87,27 +101,56 @@ root@OpenWrt:/#
     sed -i -r -e "s/^(lists_dir\sext\s).*/\1\/usr\/lib\/opkg\/lists/" /etc/opkg.conf
 
     src/gz openwrt_core http://192.168.5.136:8080/targets/ar71xx/tiny/packages
+    sed -i -r 's|http://downloads.openwrt.org/releases/18.06.6/targets|http://192.168.5.135:8080/targets|' /etc/opkg/distfeeds.conf
     opkg update
 
 ## 5.  Install Luci
-## 5.1 install Luci
-        opkg update
-        opkg install luci
 
-        http://192.168.5.1/cgi-bin/luci/
+    opkg update
+    opkg install luci
+
+    http://192.168.5.1/cgi-bin/luci/
+
+    http://192.168.5.1/cgi-bin/luci/admin/network/dhcp add static ip
+
+    edit file /etc/config/dhcp to assign a fixed ip for the host
+        config host
+            option name 'laptop'
+            option dns '1'
+            option mac '3C:97:0E:67:5A:E9'
+            option ip '192.168.5.135'
+    Or via cmdline:
+        uci -q delete dhcp.laptop
+        uci set dhcp.laptop=host
+        uci set dhcp.laptop.name=laptop
+        uci set dhcp.laptop.dns=1
+        uci set dhcp.laptop.map=3C:97:0E:67:5A:E9
+        uci set dhcp.laptop.ip=192.168.5.135
+        uci commit dhcp
+        /etc/init.d/dnsmasq restart
+
+## Access via ssh
+    ssh root@192.168.5.1
+
 ## F.1 support for usb video
     https://openwrt.org/docs/guide-user/hardware/video/usb.video
     https://openwrt.org/docs/guide-user/hardware/video/webcam
 
-    opkg install kmod-video-uvc mjpg-streamer
-    opkg install usbutils v4l2-utils uvcdynctrl fswebcam
+    opkg install kmod-video-uvc mjpg-streamer luci-app-mjpg-streamer
+    opkg install usbutils v4l-utils uvcdynctrl fswebcam
 
     edit /etc/config/mjpg-streamer to:
         1. enable mjpg-streamer
         2. enable yuv to 1, otherwise JPEG format will be used,
            and mjpg_streamer could not display it correctly via http access
+
+        # sed -i "s|option enabled '0'|option enabled '1'|" /etc/config/mjpg-streamer
+        # sed -i "s|option yuv '0'|option yuv '1'|" /etc/config/mjpg-streamer
+
     /etc/init.d/mjpg-streamer enable
     /etc/init.d/mjpg-streamer start
+
+    http://192.168.5.1:8080/ with openwrt/openwrt
 
     play with:
     -y         (enable yuv format)
@@ -122,6 +165,68 @@ root@OpenWrt:/#
 
 ## F.2 support for usb printer
     https://openwrt.org/docs/guide-user/services/print_server/cups.server
+    https://openwrt.org/docs/guide-user/services/print_server/p910nd
+    https://openwrt.org/docs/guide-user/services/print_server/p910ndprinterserver
+    https://openwrt.org/docs/guide-user/services/print_server/p910nd.server
+
+
+    https://ykhandler.wordpress.com/2015/06/22/starprintopenwrtprinter-sharing/
+
+    opkg install kmod-usb-printer p910nd luci-app-p910nd
+    has lines like following in the output of dmesg command:
+        root@OpenWrt:/# dmesg |grep -i printer
+        [  355.622847] usblp 1-1.4:1.1: usblp0: USB Bidirectional printer dev 5 if 1 alt 0 proto 2 vid 0x03F0 pid 0x8711
+        root@OpenWrt:/#
+
+        root@OpenWrt:/# netstat -an|grep 9100
+        tcp        0      0 0.0.0.0:9100            0.0.0.0:*               LISTEN
+        root@OpenWrt:/#
+
+    http://192.168.5.1/cgi-bin/luci/admin/services/p910nd
+            choose the Services -> p910nd – Printer Server.
+            Check the enable checklist then in the interface
+            choose LAN.
+            Port: 9100.
+            Checklist the bidirectional mode.
+            Then press Save & Apply.
+
+            Go to system -> Startup. Look at p910nd.
+            To make sure the service is started.
+            Press the start button beside the p910nd.
+
+       OR Via cmdline:
+            # Add a printer
+            uci -q delete p910nd.prn0
+            uci set p910nd.prn0=p910nd
+            uci set p910nd.prn0.device=/dev/usb/lp0
+            uci set p910nd.prn0.port=0
+            uci set p910nd.prn0.bidirectional=1
+            uci set p910nd.prn0.enabled=1
+            uci commit p910nd
+            /etc/init.d/p910nd restart
+
+            # Delete the printer prn0
+            uci delete p910nd.prn0
+            uci commit p910nd
+            /etc/init.d/p910nd restart
+
+
+    install the StartPrint apks:
+        StarPrint_Mobile_Print_v04.01.50.apk
+        StarPrint_Photo_Editor_v01.00.20.apk
+
+    Then open it. Slide it to Print Preview.
+        On the printer option, click on “[No printer Selected]”.
+        Press the Shared Printer in the middle bottom side.
+        Type the Printer name to anything you like.
+        Click on the IPP in the type options, Change it to “AppSocket(JetDirect)”.
+        Type the Host to 192.168.5.1 and the port to 9100.
+        Type the Shared name (i type mp237, leave it to default seems work too).
+        Next click the select driver in the driver Options.
+        Choose the manufacture of the printer. Like HP
+        Then choose the type of printer that you got. Like:
+            HP Destjet 2050 j510 Series
+        After that press Ok.
 
 ## P.1 Cannot satisfy the following dependencies for kmod-video-uvc:
 
@@ -167,3 +272,52 @@ root@OpenWrt:/#
 ## P.2 mjpg_streamer: Unable to start capture: No space left on device
     need to use a good usb hub and a good usb drive
     otherwise the bandwidth of the webcam might be affected
+
+## build kernel:
+    make \
+        -C /home/liuyq/data/openwrt/build_dir/target-mips_24kc_musl/linux-ar71xx_tiny/linux-4.9.119 \
+        HOSTCFLAGS="-O2 \
+        -I/home/liuyq/data/openwrt/staging_dir/host/include  \
+        -Wall \
+        -Wmissing-prototypes \
+        -Wstrict-prototypes" \
+        CROSS_COMPILE="mips-openwrt-linux-musl-" \
+        ARCH="mips" \
+        KBUILD_HAVE_NLS=no \
+        KBUILD_BUILD_USER="" \
+        KBUILD_BUILD_HOST="" \
+        KBUILD_BUILD_TIMESTAMP="Sun Sep 16 22:22:56 2018" \
+        KBUILD_BUILD_VERSION="0" \
+        HOST_LOADLIBES="-L/home/liuyq/data/openwrt/staging_dir/host/lib" \
+        CONFIG_SHELL="bash" \
+        V=''  \
+        cmd_syscalls= \
+        KERNELRELEASE=4.9.119 \
+        CC="mips-openwrt-linux-musl-gcc" \
+        all modules
+
+## package in menuconfig
+
+    CATEGORY -> SUBMENU
+
+   defined in package/libs/zlib/Makefile
+   Libraries -> zlib
+        define Package/zlib
+          SECTION:=libs
+          CATEGORY:=Libraries
+          TITLE:=Library implementing the deflate compression method
+          URL:=http://www.zlib.net/
+        endef
+
+
+    Development > Libraries -> zlib-dev
+    defined in package/libs/zlib/Makefile
+
+        define Package/zlib-dev
+          SECTION:=devel
+          CATEGORY:=Development
+          SUBMENU:=Libraries
+          DEPENDS:=zlib
+          TITLE:=Development files for the zlib library
+        endef
+
