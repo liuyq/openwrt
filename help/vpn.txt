@@ -43,7 +43,24 @@ OpenVPN:
 
 
     /usr/sbin/openvpn --syslog "openvpn(expressvpn)" --status /var/run/openvpn.expressvpn.status --cd /etc/openvpn/ --config jp_tokyo3.ovpn
+    162 /usr/lib/expressvpn/openvpn --cd /tmp/ovpn335390396 --config /tmp/ovpn335390396/config.ovpn --auth-user-pass credentials
 
+
+    Debugging:
+        # Restart the services, then try to reconnect
+        /etc/init.d/log restart; /etc/init.d/openvpn restart; sleep 10
+
+        # Log and status
+        logread -e openvpn; netstat -l -n -p | grep -e openvpn
+
+        # Runtime configuration
+        pgrep -f -a openvpn
+        ip address show; ip route show; ip rule show; iptables-save
+        ip -6 address show; ip -6 route show; ip -6 rule show; ip6tables-save
+
+        # Persistent configuration
+        uci show network; uci show firewall; uci show openvpn
+        head -n -0 /etc/openvpn/*.conf
 pptp:
     https://openwrt.org/docs/guide-user/services/vpn/pptp/basic
     https://openwrt.org/docs/guide-user/services/vpn/pptp/client
