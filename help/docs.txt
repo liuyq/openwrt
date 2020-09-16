@@ -236,6 +236,37 @@ root@OpenWrt:/#
             HP Destjet 2050 j510 Series
         After that press Ok.
 
+## F.3 support for usb scanner
+
+    https://openwrt.org/docs/guide-user/services/scanner_server/saned?s[]=sane
+
+    opkg update
+    opkg install kmod-usb-printer
+    opkg install xinetd
+    opkg install sane-daemon sane-frontends sane-hp
+
+    scanimage -L
+    root@OpenWrt:~# scanimage -L
+    device `hpaio:/usb/Deskjet_2050_J510_series?serial=CN23J384TQ05D1' is a Hewlett-Packard Deskjet_2050_J510_series all-in-one
+    root@OpenWrt:~#
+
+    root@OpenWrt:~# opkg list-installed |grep -i sane
+    hplip-sane - 3.19.6-2
+    libsane - 1.0.27-4
+    sane-daemon - 1.0.27-4
+    sane-frontends - 1.0.27-4
+    root@OpenWrt:~#
+
+
+    root@OpenWrt:~# vi /etc/xinetd.d/sane-port # to enable saned
+
+    echo "192.168.5.1/24" >> /etc/sane.d/saned.conf # to enable saned to be accessible from the LAN
+    /etc/init.d/xinetd restart # to restart the saned service
+
+    #scanimage -d net:192.168.5.1:hpaio:/usb/Deskjet_2050_J510_series?serial=CN23J384TQ05D1 --format jpeg -p --mode Color --resolution 300 -x 24 -y 35 >test.jpeg
+    # resolution with 1200 does not work, and has relation with the x and y
+    #but this seems not work
+
 ## P.1 Cannot satisfy the following dependencies for kmod-video-uvc:
 
         root@OpenWrt:/# opkg install kmod-video-uvc
