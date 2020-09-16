@@ -44,13 +44,30 @@
     mtd6: 01bcd000 00001000 "rootfs_data"
     root@OpenWrt:~#
 
+    断电之后reset还能进入BREED
+
+    Breed刷机完成之后，需要把电源重新启动 路由器
+
+    等一段时间之后可以ssh登录
+        ssh root@192.168.9.1
+    opkg update
+    opkg install luci
+    http://192.168.9.1/cgi-bin/luci/
+
+    change the default ip for the lan interface
+        $ uci show network.lan.ipaddr
+        $ uci set network.lan.ipaddr=192.168.11.1
+        $ uci commit
+        $ /etc/init.d/network restart
+    after the restart, the connection will be disconnected,
+    and need to reconnect with the new ip address
+
     update the dhcp client range
         Network->Interface->Lan->Edit->General Settings->IPv4 address
     The client ip address will be based on this address
     with the start and limit set in the following page:
         DHCP Server->General Setup
 
-    断电之后reset还能进入BREED
 
 5. 使用 Breed 刷入老毛子
     路由断电后按住 reset 键，后通电，
